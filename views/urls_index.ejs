@@ -6,11 +6,12 @@
 <body>
  <a id="myAnchor" href="localhost:8080/urls/new"></a>
     <!-- Write EJS code here to display shortened links -->
-    <% for (var i in urls) {
-        var longUrl = urls[i];
+    <% URLlist.forEach(function(url) {
+
+
     %>
-    <form method="POST" action="/urls/<%=i%>?_method=DELETE">
-      <li><%= i %> - <%= longUrl %>
+    <form method="POST" action="/urls/<%=url.shortURL%>?_method=DELETE">
+      <li><%= url.shortURL %> - <%= url.longURL %>
       <button name = "delete" type = "submit" > DELETE </button>
       <input type="button" onclick="myHref()" value="edit">
       </li>
@@ -18,6 +19,6 @@
     </form>
 
 
-    <% }; %>
+    <% }); %>
 </body>
 </html>
