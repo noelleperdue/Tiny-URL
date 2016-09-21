@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 
-<head>
 <body>
  <a id="myAnchor" href="localhost:8080/urls/new"></a>
     <!-- Write EJS code here to display shortened links -->
@@ -10,15 +9,19 @@
 
 
     %>
-    <form method="POST" action="/urls/<%=url.shortURL%>?_method=DELETE">
+    <form method="GET" action="/urls/<%=url.shortURL%>">
       <li><%= url.shortURL %> - <%= url.longURL %>
-      <button name = "delete" type = "submit" > DELETE </button>
-      <input type="button" onclick="myHref()" value="edit">
+      <button type="submit">EDIT</button>
       </li>
 
     </form>
+    <form method="POST" action="/urls/<%=url.shortURL%>?_method=DELETE">
+      <button type="submit">DELETE</button>
+    </form>
+
 
 
     <% }); %>
 </body>
+</head>
 </html>

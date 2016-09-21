@@ -83,12 +83,6 @@ function deleteURL(cb) {
   });
 }
 
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-
-};
-
 app.get("/", (req, res) => {
   res.redirect("/urls/new");
 });
@@ -155,37 +149,31 @@ app.get("/urls/:id", (req, res) => {
 });
 
 
-
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
-});
-
-
-app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL);
-});
-
-
 app.delete("/urls/:id", (req, res) => {
   collection.findOneAndDelete({shortURL: req.params.id})
   res.redirect("/urls");
 });
 
-// app.post("/urls/:whatever", (req, res) => {
-//   res.end("<html><body>Hello <b>World</b></body></html>\n");
-// })
+
+app.get("/urls/:id", (req, res) => {
+  collection.findOne({shortURL: req.params.id}, (err, url) => {
+    res.render("urls_show", url);
+  });
+});
 
 app.post("/urls", (req, res) => {
   let shortURL = generateRandomString();
   let longURL = req.body.longURL;
-  if collection.contains(longURL) {
+  if (collection.findOne(longURL)) {
     res.redirect("urls");
   } else {
-  collection.insert({shortURL: shortURL, longURL: longURL})
-
+  collection.insert({'shortURL': shortURL,
+   'longURL': longURL})
+}
+  console.log(shortURL)
   res.redirect("/urls/" + shortURL);
-};
+});
+//});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
