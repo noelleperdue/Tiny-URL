@@ -164,16 +164,23 @@ app.get("/urls/:id", (req, res) => {
 app.post("/urls", (req, res) => {
   let shortURL = generateRandomString();
   let longURL = req.body.longURL;
-  if (collection.findOne(longURL)) {
-    res.redirect("urls");
-  } else {
-  collection.insert({'shortURL': shortURL,
-   'longURL': longURL})
-}
-  console.log(shortURL)
-  res.redirect("/urls/" + shortURL);
+  collection.findOne({'longURL': longURL}, (err, url) => {
+    if (url) {
+      console.log("I already have this URL:", url)
+      res.redirect("urls");
+    }
+    else {
+      collection.insert({'shortURL': shortURL, 'longURL': longURL}, (err, url) => {
+        if (err) {
+          console.log('Could not connect! Unexpected error, details below.');
+        }
+        else {
+          res.redirect("/urls");
+        }
+      });
+    }
+  });
 });
-//});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
