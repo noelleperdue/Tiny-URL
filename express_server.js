@@ -87,18 +87,21 @@ app.get("/", (req, res) => {
   res.redirect("/urls/new");
 });
 
+app.get("/u/:id", (req, res) => {
+  collection.findOne({shortURL: req.params.id}, (err, url) => {
+    res.redirect(url.longURL);
+  });
+});
 
+app.post("/urls/:id", (req, res) => {
+  let longURL = req.body.longURL;
+  let shortURL = req.params.id
+  update(shortURL, longURL, (renderNew) => {
+    res.redirect("/urls");
+  });
+});
 
 app.get("/urls", (req, res) => {
-  // getURLs((err, URLlist) => {
-  //   if (err) {
-  //     console.log("failed");
-  //   }
-  //   let templateVars = {
-  //     URLlist : URLlist
-  //   };
-  //   res.render("urls_index", templateVars);
-  // });
 
   collection.find().toArray( (err, URLlist) => {
     if (err) {
@@ -116,24 +119,8 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-// app.get("/urls/:id", (req, res) => {
-//   let templateVars = { shortURL: req.params.id };
-//   res.render("urls_show", templateVars);
-// });
 
 app.get("/urls/:id", (req, res) => {
-  // let shortURL = req.params.id;
-  // getLongURL(shortURL, (err, url) => {
-  //   console.log(url);
-  //   if (err) {
-  //     console.log("failed");
-  //   };
-  //   let templateVars = {
-  //     shortURL : url.shortURL,
-  //     longURL : url.longURL
-  //   };
-  //   res.render("urls_show", templateVars);
-  // });
 
   collection.findOne({shortURL: req.params.id}, (err, url) => {
     console.log(url);
@@ -175,7 +162,7 @@ app.post("/urls", (req, res) => {
           console.log('Could not connect! Unexpected error, details below.');
         }
         else {
-          res.redirect("/urls");
+          res.redirect("/urls", url);
         }
       });
     }

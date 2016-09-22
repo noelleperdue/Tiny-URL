@@ -1,6 +1,8 @@
 {
   "name": "node-ejs",
-  "main": "server.js",
+  "main": "express_server.js",
+  "scripts": {
+    "start": "node express_server.js" },
   "dependencies": {
     "body-parser": "^1.15.2",
     "ejs": "^1.0.0",
