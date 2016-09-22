@@ -61,17 +61,6 @@ function update(shortURL, longURL, cb) {
   });
 }
 
-// function getURLs(cb) {
-//   MongoClient.connect(MONGODB_URI, (err, db) => {
-//     if (err) {
-//       console.log('Could not connect! Unexpected error, details below.');
-//       cb(err);
-//       return;
-//     }
-//     db.collection("urls").find().toArray(cb);
-//   });
-// }
-
 function deleteURL(cb) {
   MongoClient.connect(MONGODB_URI, (err, db) => {
     if (err) {
